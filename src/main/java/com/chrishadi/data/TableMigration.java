@@ -6,8 +6,8 @@ public final class TableMigration {
 
     private final String sql;
 
-    private final String title; 
-    
+    private final String title;
+
     private final String tableName;
 
     public TableMigration(String sql, String tableName, String title) {
@@ -23,7 +23,7 @@ public final class TableMigration {
     public String getTableName() {
         return tableName;
     }
-    
+
     public String getTitle() {
         return title;
     }
@@ -40,8 +40,8 @@ public final class TableMigration {
 
         TableMigration tm = (TableMigration) o;
         return Objects.equals(tm.getSql(), sql) &&
-            Objects.equals(tm.getTableName(), tableName) &&
-            Objects.equals(tm.getTitle(), title);
+                Objects.equals(tm.getTableName(), tableName) &&
+                Objects.equals(tm.getTitle(), title);
     }
 
     @Override

@@ -3,11 +3,8 @@ package com.chrishadi.parser;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
-
-import com.chrishadi.data.TableMigration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,11 +18,10 @@ public class DatabaseMigrationParserTest {
         assertNotNull(testFileUrl);
 
         File testFile = new File(testFileUrl.toURI());
-        DatabaseMigrationParser parser = new DatabaseMigrationParser(testFile);
+        DatabaseMigrationParser parser = new DatabaseMigrationParser();
 
-        parser.parse();
+        var migration = parser.parse(testFile);
 
-        var migration = parser.getDatabaseMigration();
         assertNotNull(migration);
 
         var tableMigrations = migration.getTableMigrations();
@@ -49,5 +45,4 @@ public class DatabaseMigrationParserTest {
         assertEquals("Add created_at column and updated_at column and idx_created_at index and idx_updated_at index to inventories",
                 secondTableMigration.getTitle());
     }
-
 }

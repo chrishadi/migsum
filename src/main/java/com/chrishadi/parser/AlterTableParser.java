@@ -14,6 +14,7 @@ public class AlterTableParser implements TableMigrationParser {
 
     /**
      * Create a new AlterTableParser instance
+     *
      * @param sql String
      */
     public AlterTableParser(String sql) {
@@ -23,26 +24,21 @@ public class AlterTableParser implements TableMigrationParser {
 
     /**
      * Summarize the sql
-     */
-    public void parse() {
-        String[] splits = sql.split("\\s", 4);
-        String tableName =  splits[2].replaceAll("^`|`$", "");
-        String actions = splits[3];
-        String title = makeUpTitle(actions, tableName);
-        this.tableMigration = new TableMigration(sql, tableName, title);
-    }
-
-    /**
-     * Retrieve the result of parse
+     *
      * @return TableMigration object
      */
-    public TableMigration getTableMigration() {
-        return tableMigration;
+    public TableMigration parse() {
+        String[] splits = sql.split("\\s", 4);
+        String tableName = splits[2].replaceAll("^`|`$", "");
+        String actions = splits[3];
+        String title = makeUpTitle(actions, tableName);
+        return new TableMigration(sql, tableName, title);
     }
 
     /**
      * Make the title based on the sql actions and the table name
-     * @param actions String
+     *
+     * @param actions   String
      * @param tableName String
      * @return String
      */
@@ -75,6 +71,7 @@ public class AlterTableParser implements TableMigrationParser {
 
     /**
      * Choose the preposition based on command
+     *
      * @param cmd String
      * @return String
      */
@@ -90,10 +87,11 @@ public class AlterTableParser implements TableMigrationParser {
 
     /**
      * Capitalize a string (should be in different package or just use Apache string library).
+     *
      * @param str String
      * @return String
      */
     private String capitalize(String str) {
-        return str.substring(0,1).toUpperCase() + str.substring(1);
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
     }
 }

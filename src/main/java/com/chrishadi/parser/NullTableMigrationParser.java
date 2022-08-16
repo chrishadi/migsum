@@ -4,12 +4,10 @@ import com.chrishadi.data.TableMigration;
 
 public class NullTableMigrationParser implements TableMigrationParser {
 
-    public NullTableMigrationParser() {}
+    public NullTableMigrationParser() {
+    }
 
-    public void parse() {}
-
-    public TableMigration getTableMigration() {
+    public TableMigration parse() {
         return null;
     }
-    
 }

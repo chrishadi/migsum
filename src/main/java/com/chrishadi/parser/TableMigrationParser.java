@@ -4,7 +4,5 @@ import com.chrishadi.data.TableMigration;
 
 public interface TableMigrationParser {
 
-    public void parse();
-
-    public TableMigration getTableMigration();
+    TableMigration parse();
 }

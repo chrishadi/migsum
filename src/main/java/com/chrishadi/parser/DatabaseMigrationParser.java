@@ -12,41 +12,36 @@ import com.chrishadi.data.TableMigration;
 
 public class DatabaseMigrationParser {
 
-    private final File file;
-    private DatabaseMigration databaseMigration;
-
     /**
-     * Create a new DatabaseMigrationParser instance.
+     * Parse a migration file
+     *
      * @param file java.io.File object
-     */
-    public DatabaseMigrationParser(File file) {
-        Objects.requireNonNull(file);
-        this.file = file;
-    }
-
-    /**
-     * Parse the migration file
+     * @return DatabaseMigration object
      * @throws IOException when reading file content
      */
-    public void parse() throws IOException {
+    public DatabaseMigration parse(File file) throws IOException {
+        Objects.requireNonNull(file);
         byte[] bytes = Files.readAllBytes(file.toPath());
         String sql = new String(bytes);
         List<TableMigration> tableMigrations = parseMigration(removeComment(sql));
-        databaseMigration = new DatabaseMigration(tableMigrations);
+        return new DatabaseMigration(tableMigrations);
     }
 
     /**
-     * Retrieve the result of parse.
-     * @return DatabaseMigration object.
+     * Remove sql comments
+     *
+     * @param sql String
+     * @return String
      */
-    public DatabaseMigration getDatabaseMigration() {
-        return databaseMigration;
+    private String removeComment(String sql) {
+        return sql.replaceAll("--.*\n", "");
     }
 
     /**
      * Parse the sql
+     *
      * @param sql String
-     * @return List of TableMigration objects
+     * @return List of TableMigration object
      */
     private List<TableMigration> parseMigration(String sql) {
         List<TableMigration> migrations = new ArrayList<>();
@@ -56,8 +51,7 @@ public class DatabaseMigrationParser {
             }
 
             TableMigrationParser parser = chooseTableMigrationParserBySql(tableSql.trim());
-            parser.parse();
-            TableMigration tableMigration = parser.getTableMigration();
+            TableMigration tableMigration = parser.parse();
             if (tableMigration != null) {
                 migrations.add(tableMigration);
             }
@@ -67,22 +61,14 @@ public class DatabaseMigrationParser {
 
     /**
      * Choose statement parser based on a few first keywords
+     *
      * @param sql String
-     * @return TableMigrationParser
+     * @return TableMigrationParser object
      */
     private TableMigrationParser chooseTableMigrationParserBySql(String sql) {
         if (sql.toUpperCase().startsWith("ALTER TABLE")) {
             return new AlterTableParser(sql);
         }
         return new NullTableMigrationParser();
-    }
-
-    /**
-     * Remove sql comments
-     * @param sql String
-     * @return String
-     */
-    private String removeComment(String sql) {
-        return sql.replaceAll("--.*\r*\n", "");
     }
 }
