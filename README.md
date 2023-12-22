@@ -1,7 +1,7 @@
 MigSum
 ======
 
-Build DDL migration summaries.
+DDL migration summarizer.
 
 For example:
 
